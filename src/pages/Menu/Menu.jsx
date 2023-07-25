@@ -55,7 +55,7 @@ const Menu = () => {
 
         </section>
      
-      <h1>this is menu</h1>
+    
       </div>
     </div>
   );
