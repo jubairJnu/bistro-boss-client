@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 
 
 const Header = () => {
+ 
   return (
     <div>
       <div className="navbar text-white fixed z-10 bg-black bg-opacity-25 max-w-7xl">
@@ -24,6 +25,7 @@ const Header = () => {
             <li><Link to='/'>Home</Link></li>
             <li><Link to='/menu'>Our Menu</Link></li>
             <li><Link to='/order/salad'>Order</Link></li>
+            <li><Link to='/login'>Login</Link></li>
           </ul>
         </div>
         <div className="navbar-end">
