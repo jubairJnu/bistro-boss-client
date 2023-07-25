@@ -1,22 +1,37 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import loginImg from '../../assets/others/authentication2.png'
 import { useContext } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
-  const {signUp} = useContext(AuthContext);
+  const navigate =useNavigate();
+  const {signUp,updateUserProfile} = useContext(AuthContext);
   const handleSignUp=event=>{
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
+    const photo = form.photo.value;
     console.log(name,email,password);
     signUp(email,password)
     .then(result =>{
       const signUser = result.user;
       console.log(signUser);
+      updateUserProfile(name,photo)
+      .then(()=>{
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Registered Successfully',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        navigate('/')
+      })
+   
     })
     .catch(error=>{
       console.log(error);
@@ -36,6 +51,12 @@ const SignUp = () => {
               <span className="label-text">Name</span>
             </label>
             <input type="text" name='name' placeholder="Name" className="input input-bordered" />
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Photo URL</span>
+            </label>
+            <input type="text" name='photo' placeholder="photo" className="input input-bordered" />
           </div>
           <div className="form-control">
             <label className="label">

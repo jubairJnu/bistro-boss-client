@@ -35,7 +35,10 @@ const Header = () => {
             <li><Link to='/'>Home</Link></li>
             <li><Link to='/menu'>Our Menu</Link></li>
             <li><Link to='/order/salad'>Order</Link></li>
-            {user? <button onClick={handleLogOut} className="btn-sm btn-ghost">log Out</button>
+            {user? <> {user?.displayName}
+              <button onClick={handleLogOut} className="btn-sm btn-ghost">log Out</button>
+            </>
+            
             :<li><Link to='/login'>Login</Link></li>}
           </ul>
         </div>
