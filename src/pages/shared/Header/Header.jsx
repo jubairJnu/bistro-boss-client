@@ -1,21 +1,24 @@
 import { useContext } from "react";
 import { Link, } from "react-router-dom";
 import { AuthContext } from "../../../provider/AuthProvider";
+import {FaShoppingCart } from 'react-icons/fa';
+import useCart from "../../../hooks/useCart";
 
 
 const Header = () => {
-  const {logOut,user} = useContext(AuthContext);
-  const handleLogOut=()=>{
+  const { logOut, user } = useContext(AuthContext);
+  const [cart]= useCart();
+  const handleLogOut = () => {
     logOut()
-    .then(()=>{})
-    .catch(error=>{
-      console.log(error);
-    })
+      .then(() => { })
+      .catch(error => {
+        console.log(error);
+      })
   }
- 
+
   return (
     <div>
-      <div className="navbar text-white fixed z-10 bg-black bg-opacity-25 max-w-7xl">
+      <div className="navbar  text-white fixed z-10 bg-black bg-opacity-25 max-w-7xl">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -35,11 +38,19 @@ const Header = () => {
             <li><Link to='/'>Home</Link></li>
             <li><Link to='/menu'>Our Menu</Link></li>
             <li><Link to='/order/salad'>Order</Link></li>
-            {user? <> {user?.displayName}
+            <li>
+             <Link  to='dashboard/mycart'>
+             <button className="btn">
+             <FaShoppingCart/> 
+                <div className="badge badge-secondary">{cart?.length || 0} </div>
+              </button>
+             </Link>
+            </li>
+            {user ? <>{user?.displayName}
               <button onClick={handleLogOut} className="btn-sm btn-ghost">log Out</button>
             </>
-            
-            :<li><Link to='/login'>Login</Link></li>}
+
+              : <li><Link to='/login'>Login</Link></li>}
           </ul>
         </div>
         <div className="navbar-end">

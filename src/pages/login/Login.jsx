@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocailLogin from '../shared/SocailLogin';
 
 const Login = () => {
   const location = useLocation();
@@ -85,6 +86,7 @@ const Login = () => {
               <input disabled={disable} className="btn btn-primary" type="submit" value="Login" />
             </div>
             <p><small>New to bistro boss? <Link to="/signUp">Sign UP</Link> </small></p>
+            <SocailLogin></SocailLogin>
           </form>
           
         </div>

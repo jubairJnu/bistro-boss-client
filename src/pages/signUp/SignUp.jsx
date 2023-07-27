@@ -4,6 +4,7 @@ import loginImg from '../../assets/others/authentication2.png'
 import { useContext } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
 import Swal from 'sweetalert2';
+import SocailLogin from '../shared/SocailLogin';
 
 const SignUp = () => {
   const navigate =useNavigate();
@@ -22,14 +23,30 @@ const SignUp = () => {
       console.log(signUser);
       updateUserProfile(name,photo)
       .then(()=>{
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Registered Successfully',
-          showConfirmButton: false,
-          timer: 1500
+        // **  user crate in data base ***
+        const savedUser = {name:name, email: email }
+        fetch('http://localhost:5000/users',{
+          method:'POST',
+          headers:{
+            'content-type': 'application/json'
+          },
+          body:JSON.stringify(savedUser)
         })
-        navigate('/')
+        .then(res => res.json())
+        .then(data =>{
+          if(data.insertedId){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Registered Successfully',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            navigate('/')
+          }
+        })
+
+      
       })
    
     })
@@ -73,9 +90,10 @@ const SignUp = () => {
           
           <div className="form-control mt-6">
 
-            <input  className="btn btn-primary" type="submit" value="Login" />
+            <input  className="btn btn-primary" type="submit" value="Sign Up" />
           </div>
           <p><small>Already Have an account? <Link to="/login">Login</Link> </small></p>
+          <SocailLogin></SocailLogin>
         </form>
         
       </div>
