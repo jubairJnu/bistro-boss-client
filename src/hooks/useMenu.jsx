@@ -9,7 +9,7 @@ const useMenu = () => {
       .then(data => {
         setMenu(data);
         setLoading(false);
-        console.log(data);
+        // console.log(data);
       })
   }, [])
   return [menu,loading]
