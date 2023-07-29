@@ -12,6 +12,9 @@ import Secter from "../pages/Secret/Secter";
 import Dashboard from "../Layout/Dashboard";
 import MyCart from "../pages/Dashboard/MyCart";
 import Allusers from "../pages/Dashboard/Allusers";
+import AddItem from "../pages/Dashboard/AddItem";
+// import AdminRoutes from "./AdminRoutes";
+import ManageItem from "../pages/Dashboard/ManageItem";
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +58,14 @@ export const router = createBrowserRouter([
       {
         path:'allusers',
         element:<Allusers></Allusers>
+      },
+      {
+        path:'addAnItem',
+        element:<AddItem></AddItem>
+      },
+      {
+        path:'managaitems',
+        element:<ManageItem></ManageItem>
       }
     ]
   }

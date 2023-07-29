@@ -1,56 +1,48 @@
-import  { useContext, useEffect, } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../provider/AuthProvider';
+import useAuth from './useAuth';
 
 
-// Import your AuthContext here
-// import { AuthContext } from './AuthContext';
+const axiosSecure = axios.create({
+  baseURL: 'http://localhost:5000', 
+});
 
 const useAxiosSecure = () => {
-  const {logOut} = useContext(AuthContext);
-  const navigate = useNavigate();
-  // Replace 'AuthContext' with the actual name of your AuthContext
-  // const authContext = useContext(AuthContext);
+  const { logOut } = useAuth(); 
+  const navigate = useNavigate(); 
 
-  // Get the access token from local storage
  
+  useEffect(() => {
+    axiosSecure.interceptors.request.use((config) => {
+      const token = localStorage.getItem('access-token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+       }
+      return config;
+    });
+    axiosSecure.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          await logOut();
+          navigate('/login');
+          // Swal.fire({
+          //   title: 'Custom animation with Animate.css',
+          //   showClass: {
+          //     popup: 'animate__animated animate__fadeInDown'
+          //   },
+          //   hideClass: {
+          //     popup: 'animate__animated animate__fadeOutUp'
+          //   }
+          // })
+        }
+        return Promise.reject(error);
+      }
+    );
+  }, [logOut, navigate]);
 
-  // Create a new Axios instance with base URL and default headers
-  const axiosSecure = axios.create({
-    baseURL: 'http://localhost:5000', // Replace with your API base URL
-  
-  });
-
-  // Add an interceptor to handle unauthorized (401 and 403) responses
-useEffect(()=>{
-  axiosSecure.interceptors.request.use((config)=>{
-    const token = localStorage.getItem('access-token');
-    if(token){
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  })
-  axiosSecure.interceptors.response.use(
-    (response) => response,
-  async (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Call the logout method from AuthContext asynchronously
-      // await authContext.logOut();
-      logOut(); // Assuming 'logOut' comes from the AuthContext
-
-      // Redirect the user to the login page
-      navigate('/login');
-    }
-    return Promise.reject(error);
-  }
-);
-  
-},[logOut,navigate,axiosSecure])
-  
-  
   return [axiosSecure];
 };
-
 
 export default useAxiosSecure;

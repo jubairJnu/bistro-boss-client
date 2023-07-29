@@ -43,18 +43,19 @@ const updateUserProfile =(name,photo)=>{
   useEffect(() => {
     const unsubscribed = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser);
-      if(currentUser){
-        axios.post('http://localhost:5000/jwt',{email: currentUser.email})
+      if(currentUser?.email){
+        axios.post('http://localhost:5000/jwt',{email: currentUser?.email})
         .then(data=>{
-          console.log(data.data)
-          localStorage.setItem('access-token', data.data)
+          console.log(data)
+          localStorage.setItem('access-token', data.data.token)
+          setLoading(false);
         })
 
       }
       else{
         localStorage.removeItem('access-token')
       }
-      setLoading(false);
+     
     })
     return () => {
       unsubscribed();
